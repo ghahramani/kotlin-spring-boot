@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+    app:
+        build: ../
+        user: docker
+        hostname: docker
+        command: /opt/run.sh
+        ports:
+            - 8080:8080
+            - 5005:5005
+        env_file:
+            - ./config/env/app.env
+        external_links:
+            - mongodb:db
+            - config:config-server
+        volumes:
+            - ./config/bash/run-server.sh:/opt/run.sh:ro
+            - ./config/bash/wait-for-it.sh:/opt/wait-for-it.sh:ro
+            - ../../app:~/project
+
+    config:
+        build: ../
+        user: docker
+        hostname: docker
+        command: /opt/config.sh
+        ports:
+            - 9090:9090
+            - 5006:5005
+        env_file:
+            - ./config/env/config.env
+        volumes:
+            - ./config/bash/run-server.sh:/opt/run.sh:ro
+            - ./config/bash/wait-for-it.sh:/opt/wait-for-it.sh:ro
+            - ../../config-server:~/project
+
+    mongodb:
+        image: mongo:3.4.9
+        ports:
+            - 27017:27017
