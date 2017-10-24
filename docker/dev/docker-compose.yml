@@ -15,24 +15,24 @@ services:
             - mongodb:db
             - config:config-server
         volumes:
-            - ./config/bash/run-server.sh:/opt/run.sh:ro
+            - ./config/bash/app.sh:/opt/run.sh:ro
             - ./config/bash/wait-for-it.sh:/opt/wait-for-it.sh:ro
-            - ../../app:~/project
+            - ../../app:/home/docker/project
 
     config:
         build: ../
         user: docker
         hostname: docker
-        command: /opt/config.sh
+        command: /opt/run.sh
         ports:
             - 9090:9090
             - 5006:5005
         env_file:
             - ./config/env/config.env
         volumes:
-            - ./config/bash/run-server.sh:/opt/run.sh:ro
+            - ./config/bash/config.sh:/opt/run.sh:ro
             - ./config/bash/wait-for-it.sh:/opt/wait-for-it.sh:ro
-            - ../../config-server:~/project
+            - ../../config-server:/home/docker/project
 
     mongodb:
         image: mongo:3.4.9

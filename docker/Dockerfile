@@ -4,14 +4,25 @@ MAINTAINER Navid Ghahremani <ghahramani.navid@gmail.com>
 ENV JAVA_VERSION 9
 ENV JAVA_HOME /usr/lib/jvm/java-${JAVA_VERSION}-oracle
 
+# install utilities
+RUN apt update && apt -y install net-tools
+RUN apt update && apt -y install iputils-ping
+RUN apt update && apt -y install telnet
+RUN apt update && apt -y install nano
+RUN apt update && apt -y install sudo
+RUN apt update && apt -y install zip
+RUN apt update && apt -y install bzip2
+RUN apt update && apt -y install fontconfig
+RUN apt update && apt -y install curl
+RUN apt update && apt -y install debconf-utils
+RUN apt update && apt -y install axel
+RUN apt update && apt -y install locales
+
 # set he locale
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-
-# install utilities
-RUN apt update && apt -y install net-tools iputils-ping telnet git nano vim git sudo zip bzip2 fontconfig curl
 
 # install java8
 #RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
